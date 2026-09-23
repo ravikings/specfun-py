@@ -26,7 +26,7 @@ that moved a digit.
 ```bash
 git clone https://github.com/ravikings/specfun-py
 cd specfun-py
-pip install "nativegate[clang,build]"   # needs cmake, ninja, gfortran
+pip install "nativegate[clang,build]>=0.1.3"   # needs cmake, ninja, gfortran
 pip install -e "services/specfun[build,test]"
 ngate build specfun
 python -m pytest services/specfun/tests -q
