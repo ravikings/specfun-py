@@ -36,7 +36,7 @@ jobs:
           command -v ninja >/dev/null 2>&1 || brew install ninja
 
       - name: Install nativegate
-        run: pip install "nativegate[clang,build,test]>=0.1.6"  # dialect resolution
+        run: pip install "nativegate[clang,build,test]>=0.1.7"  # dialect resolution
 
       # Prove the pipeline rather than ship its output: regenerate the
       # bindings, CMake and package from the committed Fortran on every
