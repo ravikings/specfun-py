@@ -11,11 +11,11 @@ original Fortran in this repository's `services/specfun/native/`, so
 every function's route to your CPU is: unchanged F77 → f2py-generated
 extension → Python function.
 
-The source is unchanged except for one mechanical transformation,
-documented in [PROVENANCE.md](PROVENANCE.md): the files mark their
-single/double dialects by commenting every statement in both (`CS`-single,
-`CD`-double). The `CS` lines are commented out and the `CD` prefix
-stripped, which yields the standard DOUBLE PRECISION dialect.
+The source is unchanged: the files mark their single/double dialects by
+commenting every statement in both (`CS`-single, `CD`-double), and
+nativegate's `dialect: cd` setting resolves the marking into the build
+copy under `native/_expanded/`. The committed `.f` files are the netlib
+downloads byte for byte; PROVENANCE.md carries the URLs and hashes.
 
 ## Install / build
 

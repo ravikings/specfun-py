@@ -1,5 +1,6 @@
 name: specfun
 language: fortran
+dialect: cd
 expose:
   functions:
     - DGAMMA

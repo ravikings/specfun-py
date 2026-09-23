@@ -3,7 +3,7 @@
   "nativegate_version": "0.1.0",
   "name": "specfun",
   "language": "fortran",
-  "source_file": "services/specfun/native/algama.f",
+  "source_file": "services/specfun/native/_expanded/algama.f",
   "classes": [],
   "functions": [
     {

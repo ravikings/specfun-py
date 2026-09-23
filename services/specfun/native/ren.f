@@ -18,16 +18,16 @@ C          Argonne, IL 60439
 C
 C---------------------------------------------------------------------
       INTEGER IY,J,K
-C     REAL             CONV,C1,C2,C3,ONE,REN
-      DOUBLE PRECISION CONV,C1,C2,C3,ONE,REN
+CS    REAL             CONV,C1,C2,C3,ONE,REN
+CD    DOUBLE PRECISION CONV,C1,C2,C3,ONE,REN
       DATA IY/100001/
-C     DATA ONE,C1,C2,C3/1.0E0,2796203.0E0,1.0E-6,1.0E-12/
-      DATA ONE,C1,C2,C3/1.0D0,2796203.0D0,1.0D-6,1.0D-12/
+CS    DATA ONE,C1,C2,C3/1.0E0,2796203.0E0,1.0E-6,1.0E-12/
+CD    DATA ONE,C1,C2,C3/1.0D0,2796203.0D0,1.0D-6,1.0D-12/
 C---------------------------------------------------------------------
 C  Statement functions for conversion between integer and float
 C---------------------------------------------------------------------
-C     CONV(J) = REAL(J)
-      CONV(J) = DBLE(J)
+CS    CONV(J) = REAL(J)
+CD    CONV(J) = DBLE(J)
 C---------------------------------------------------------------------
       J = K
       IY = IY * 125
