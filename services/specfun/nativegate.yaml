@@ -1,0 +1,18 @@
+name: specfun
+language: fortran
+expose:
+  functions:
+    - DGAMMA
+    - DLGAMA
+    - PSI
+    - DAW
+    - EI
+    - EONE
+    - EXPEI
+    - DERF
+    - DERFC
+    - DERFCX
+    - BESI0
+    - BESI1
+    - BESK0
+    - BESK1

@@ -1,0 +1,365 @@
+{
+  "schema_version": "1.6",
+  "nativegate_version": "0.1.0",
+  "name": "specfun",
+  "language": "fortran",
+  "source_file": "services/specfun/native/algama.f",
+  "classes": [],
+  "functions": [
+    {
+      "name": "DLGAMA",
+      "parameters": [
+        {
+          "name": "X",
+          "type": "float",
+          "is_array": false,
+          "intent": "in",
+          "native_type": null,
+          "is_const": false,
+          "is_optional": false,
+          "length_param": null,
+          "is_mutable_buffer": false,
+          "is_scalar_ref": false
+        }
+      ],
+      "returns": "float",
+      "is_subroutine": false,
+      "namespace": null,
+      "is_overloaded": false,
+      "returns_array": false,
+      "cpp_name": null,
+      "fortran_module": null,
+      "doc": "This routine calculates the LOG(GAMMA) function for a positive real\nargument X.  Computation is based on an algorithm outlined in\nreferences 1 and 2.  The program uses rational functions that\ntheoretically approximate LOG(GAMMA) to at least 18 significant\ndecimal digits.  The approximation for X > 12 is from reference\n3, while approximations for X < 12.0 are similar to those in\nreference 1, but are unpublished.  The accuracy achieved depends\non the arithmetic system, the compiler, the intrinsic functions,\nand proper selection of the machine-dependent constants.\nExplanation of machine-dependent constants\nbeta   - radix for the floating-point representation\nmaxexp - the smallest positive power of beta that overflows\nXBIG   - largest argument for which LN(GAMMA(X)) is representable\nin the machine, i.e., the solution to the equation\nLN(GAMMA(XBIG)) = beta**maxexp\nXINF   - largest machine representable floating-point number;\napproximately beta**maxexp.\nEPS    - The smallest positive floating-point number such that\n1.0+EPS .GT. 1.0\nFRTBIG - Rough estimate of the fourth root of XBIG\nApproximate values for some important machines are:\nbeta      maxexp         XBIG\nCRAY-1        (S.P.)        2        8191       9.62E+2461\nCyber 180/855\nunder NOS   (S.P.)        2        1070       1.72E+319\nIEEE (IBM/XT,\nSUN, etc.)  (S.P.)        2         128       4.08E+36\nIEEE (IBM/XT,\nSUN, etc.)  (D.P.)        2        1024       2.55D+305\nIBM 3033      (D.P.)       16          63       4.29D+73"
+    },
+    {
+      "name": "DAW",
+      "parameters": [
+        {
+          "name": "XX",
+          "type": "float",
+          "is_array": false,
+          "intent": "in",
+          "native_type": null,
+          "is_const": false,
+          "is_optional": false,
+          "length_param": null,
+          "is_mutable_buffer": false,
+          "is_scalar_ref": false
+        }
+      ],
+      "returns": "float",
+      "is_subroutine": false,
+      "namespace": null,
+      "is_overloaded": false,
+      "returns_array": false,
+      "cpp_name": null,
+      "fortran_module": null,
+      "doc": "This function program evaluates Dawson's integral,\n2  / x   2\n-x   |    t\nF(x) = e     |   e    dt\n/ 0\nfor a real argument x.\nThe calling sequence for this function is\nY=DAW(X)\nThe main computation uses rational Chebyshev approximations\npublished in Math. Comp. 24, 171-178 (1970) by Cody, Paciorek\nand Thacher.  This transportable program is patterned after the\nmachine-dependent FUNPACK program DDAW(X), but cannot match that\nversion for efficiency or accuracy.  This version uses rational\napproximations that are theoretically accurate to about 19\nsignificant decimal digits.  The accuracy achieved depends on the\narithmetic system, the compiler, the intrinsic functions, and\nproper selection of the machine-dependent constants.\nExplanation of machine-dependent constants\nXINF   = largest positive machine number\nXMIN   = the smallest positive machine number.\nEPS    = smallest positive number such that 1+eps > 1.\nApproximately  beta**(-p), where beta is the machine\nradix and p is the number of significant base-beta\ndigits in a floating-point number.\nXMAX   = absolute argument beyond which DAW(X) underflows.\nXMAX = min(0.5/xmin, xinf).\nXSMALL = absolute argument below DAW(X)  may be represented\nby X.  We recommend XSMALL = sqrt(eps).\nXLARGE = argument beyond which DAW(X) may be represented by\n1/(2x).  We recommend XLARGE = 1/sqrt(eps)."
+    },
+    {
+      "name": "EI",
+      "parameters": [
+        {
+          "name": "X",
+          "type": "float",
+          "is_array": false,
+          "intent": "in",
+          "native_type": null,
+          "is_const": false,
+          "is_optional": false,
+          "length_param": null,
+          "is_mutable_buffer": false,
+          "is_scalar_ref": false
+        }
+      ],
+      "returns": "float",
+      "is_subroutine": false,
+      "namespace": null,
+      "is_overloaded": false,
+      "returns_array": false,
+      "cpp_name": null,
+      "fortran_module": null,
+      "doc": "This function program computes approximate values for the\nexponential integral  Ei(x), where  x  is real.\nAuthor: W. J. Cody\nLatest modification: January 12, 1988"
+    },
+    {
+      "name": "EONE",
+      "parameters": [
+        {
+          "name": "X",
+          "type": "float",
+          "is_array": false,
+          "intent": "in",
+          "native_type": null,
+          "is_const": false,
+          "is_optional": false,
+          "length_param": null,
+          "is_mutable_buffer": false,
+          "is_scalar_ref": false
+        }
+      ],
+      "returns": "float",
+      "is_subroutine": false,
+      "namespace": null,
+      "is_overloaded": false,
+      "returns_array": false,
+      "cpp_name": null,
+      "fortran_module": null,
+      "doc": "This function program computes approximate values for the\nexponential integral E1(x), where  x  is real.\nAuthor: W. J. Cody\nLatest modification: January 12, 1988"
+    },
+    {
+      "name": "EXPEI",
+      "parameters": [
+        {
+          "name": "X",
+          "type": "float",
+          "is_array": false,
+          "intent": "in",
+          "native_type": null,
+          "is_const": false,
+          "is_optional": false,
+          "length_param": null,
+          "is_mutable_buffer": false,
+          "is_scalar_ref": false
+        }
+      ],
+      "returns": "float",
+      "is_subroutine": false,
+      "namespace": null,
+      "is_overloaded": false,
+      "returns_array": false,
+      "cpp_name": null,
+      "fortran_module": null,
+      "doc": "This function program computes approximate values for the\nfunction  exp(-x) * Ei(x), where  Ei(x)  is the exponential\nintegral, and  x  is real.\nAuthor: W. J. Cody\nLatest modification: January 12, 1988"
+    },
+    {
+      "name": "DERF",
+      "parameters": [
+        {
+          "name": "X",
+          "type": "float",
+          "is_array": false,
+          "intent": "in",
+          "native_type": null,
+          "is_const": false,
+          "is_optional": false,
+          "length_param": null,
+          "is_mutable_buffer": false,
+          "is_scalar_ref": false
+        }
+      ],
+      "returns": "float",
+      "is_subroutine": false,
+      "namespace": null,
+      "is_overloaded": false,
+      "returns_array": false,
+      "cpp_name": null,
+      "fortran_module": null,
+      "doc": "This subprogram computes approximate values for erf(x).\n(see comments heading CALERF).\nAuthor/date: W. J. Cody, January 8, 1985"
+    },
+    {
+      "name": "DERFC",
+      "parameters": [
+        {
+          "name": "X",
+          "type": "float",
+          "is_array": false,
+          "intent": "in",
+          "native_type": null,
+          "is_const": false,
+          "is_optional": false,
+          "length_param": null,
+          "is_mutable_buffer": false,
+          "is_scalar_ref": false
+        }
+      ],
+      "returns": "float",
+      "is_subroutine": false,
+      "namespace": null,
+      "is_overloaded": false,
+      "returns_array": false,
+      "cpp_name": null,
+      "fortran_module": null,
+      "doc": "This subprogram computes approximate values for erfc(x).\n(see comments heading CALERF).\nAuthor/date: W. J. Cody, January 8, 1985"
+    },
+    {
+      "name": "DERFCX",
+      "parameters": [
+        {
+          "name": "X",
+          "type": "float",
+          "is_array": false,
+          "intent": "in",
+          "native_type": null,
+          "is_const": false,
+          "is_optional": false,
+          "length_param": null,
+          "is_mutable_buffer": false,
+          "is_scalar_ref": false
+        }
+      ],
+      "returns": "float",
+      "is_subroutine": false,
+      "namespace": null,
+      "is_overloaded": false,
+      "returns_array": false,
+      "cpp_name": null,
+      "fortran_module": null,
+      "doc": "This subprogram computes approximate values for exp(x*x) * erfc(x).\n(see comments heading CALERF).\nAuthor/date: W. J. Cody, March 30, 1987"
+    },
+    {
+      "name": "DGAMMA",
+      "parameters": [
+        {
+          "name": "X",
+          "type": "float",
+          "is_array": false,
+          "intent": "in",
+          "native_type": null,
+          "is_const": false,
+          "is_optional": false,
+          "length_param": null,
+          "is_mutable_buffer": false,
+          "is_scalar_ref": false
+        }
+      ],
+      "returns": "float",
+      "is_subroutine": false,
+      "namespace": null,
+      "is_overloaded": false,
+      "returns_array": false,
+      "cpp_name": null,
+      "fortran_module": null,
+      "doc": "This routine calculates the GAMMA function for a real argument X.\nComputation is based on an algorithm outlined in reference 1.\nThe program uses rational functions that approximate the GAMMA\nfunction to at least 20 significant decimal digits.  Coefficients\nfor the approximation over the interval (1,2) are unpublished.\nThose for the approximation for X .GE. 12 are from reference 2.\nThe accuracy achieved depends on the arithmetic system, the\ncompiler, the intrinsic functions, and proper selection of the\nmachine-dependent constants.\nExplanation of machine-dependent constants\nbeta   - radix for the floating-point representation\nmaxexp - the smallest positive power of beta that overflows\nXBIG   - the largest argument for which GAMMA(X) is representable\nin the machine, i.e., the solution to the equation\nGAMMA(XBIG) = beta**maxexp\nXINF   - the largest machine representable floating-point number;\napproximately beta**maxexp\nEPS    - the smallest positive floating-point number such that\n1.0+EPS .GT. 1.0\nXMININ - the smallest positive floating-point number such that\n1/XMININ is machine representable\nApproximate values for some important machines are:\nbeta       maxexp        XBIG\nCRAY-1         (S.P.)        2         8191        966.961\nCyber 180/855\nunder NOS    (S.P.)        2         1070        177.803\nIEEE (IBM/XT,\nSUN, etc.)   (S.P.)        2          128        35.040\nIEEE (IBM/XT,\nSUN, etc.)   (D.P.)        2         1024        171.624"
+    },
+    {
+      "name": "BESI0",
+      "parameters": [
+        {
+          "name": "X",
+          "type": "float",
+          "is_array": false,
+          "intent": "in",
+          "native_type": null,
+          "is_const": false,
+          "is_optional": false,
+          "length_param": null,
+          "is_mutable_buffer": false,
+          "is_scalar_ref": false
+        }
+      ],
+      "returns": "float",
+      "is_subroutine": false,
+      "namespace": null,
+      "is_overloaded": false,
+      "returns_array": false,
+      "cpp_name": null,
+      "fortran_module": null,
+      "doc": "This long precision subprogram computes approximate values for\nmodified Bessel functions of the first kind of order zero for\narguments ABS(ARG) .LE. XMAX  (see comments heading CALCI0)."
+    },
+    {
+      "name": "BESI1",
+      "parameters": [
+        {
+          "name": "X",
+          "type": "float",
+          "is_array": false,
+          "intent": "in",
+          "native_type": null,
+          "is_const": false,
+          "is_optional": false,
+          "length_param": null,
+          "is_mutable_buffer": false,
+          "is_scalar_ref": false
+        }
+      ],
+      "returns": "float",
+      "is_subroutine": false,
+      "namespace": null,
+      "is_overloaded": false,
+      "returns_array": false,
+      "cpp_name": null,
+      "fortran_module": null,
+      "doc": "This long precision subprogram computes approximate values for\nmodified Bessel functions of the first kind of order one for\narguments ABS(ARG) .LE. XMAX  (see comments heading CALCI1)."
+    },
+    {
+      "name": "BESK0",
+      "parameters": [
+        {
+          "name": "X",
+          "type": "float",
+          "is_array": false,
+          "intent": "in",
+          "native_type": null,
+          "is_const": false,
+          "is_optional": false,
+          "length_param": null,
+          "is_mutable_buffer": false,
+          "is_scalar_ref": false
+        }
+      ],
+      "returns": "float",
+      "is_subroutine": false,
+      "namespace": null,
+      "is_overloaded": false,
+      "returns_array": false,
+      "cpp_name": null,
+      "fortran_module": null,
+      "doc": "This function program computes approximate values for the\nmodified Bessel function of the second kind of order zero\nfor arguments 0.0 .LT. ARG .LE. XMAX (see comments heading\nCALCK0).\nAuthors: W. J. Cody and Laura Stoltz\nLatest Modification: January 19, 1988"
+    },
+    {
+      "name": "BESK1",
+      "parameters": [
+        {
+          "name": "X",
+          "type": "float",
+          "is_array": false,
+          "intent": "in",
+          "native_type": null,
+          "is_const": false,
+          "is_optional": false,
+          "length_param": null,
+          "is_mutable_buffer": false,
+          "is_scalar_ref": false
+        }
+      ],
+      "returns": "float",
+      "is_subroutine": false,
+      "namespace": null,
+      "is_overloaded": false,
+      "returns_array": false,
+      "cpp_name": null,
+      "fortran_module": null,
+      "doc": "This function program computes approximate values for the\nmodified Bessel function of the second kind of order one\nfor arguments  XLEAST .LE. ARG .LE. XMAX."
+    },
+    {
+      "name": "PSI",
+      "parameters": [
+        {
+          "name": "XX",
+          "type": "float",
+          "is_array": false,
+          "intent": "in",
+          "native_type": null,
+          "is_const": false,
+          "is_optional": false,
+          "length_param": null,
+          "is_mutable_buffer": false,
+          "is_scalar_ref": false
+        }
+      ],
+      "returns": "float",
+      "is_subroutine": false,
+      "namespace": null,
+      "is_overloaded": false,
+      "returns_array": false,
+      "cpp_name": null,
+      "fortran_module": null,
+      "doc": "This function program evaluates the logarithmic derivative of the\ngamma function,\npsi(x) = d/dx (gamma(x)) / gamma(x) = d/dx (ln gamma(x))\nfor real x, where either\n-xmax1 < x < -xmin (x not a negative integer), or\nxmin < x.\nThe calling sequence for this function is\nY = PSI(X)\nThe main computation uses rational Chebyshev approximations\npublished in Math. Comp. 27, 123-127 (1973) by Cody, Strecok and\nThacher.  This transportable program is patterned after the\nmachine-dependent FUNPACK program PSI(X), but cannot match that\nversion for efficiency or accuracy.  This version uses rational\napproximations that are theoretically accurate to 20 significant\ndecimal digits.  The accuracy achieved depends on the arithmetic\nsystem, the compiler, the intrinsic functions, and proper selection\nof the machine-dependent constants.\nExplanation of machine-dependent constants\nXINF   = largest positive machine number\nXMAX1  = beta ** (p-1), where beta is the radix for the\nfloating-point system, and p is the number of base-beta\ndigits in the floating-point significand.  This is an\nupper bound on non-integral floating-point numbers, and\nthe negative of the lower bound on acceptable negative\narguments for PSI.  If rounding is necessary, round this\nvalue down.\nXMIN1  = the smallest in magnitude acceptable argument.  We\nrecommend XMIN1 = MAX(1/XINF,xmin) rounded up, where\nxmin is the smallest positive floating-point number.\nXSMALL = absolute argument below which  PI*COTAN(PI*X)  may be"
+    }
+  ],
+  "structs": [],
+  "fortran_module": null,
+  "skipped": [],
+  "fortran_shims": [],
+  "diagnostics": []
+}

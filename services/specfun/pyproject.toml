@@ -1,0 +1,13 @@
+[build-system]
+requires = ["scikit-build-core", "numpy", "meson", "ninja"]
+build-backend = "scikit_build_core.build"
+
+[project]
+name = "specfun"
+version = "1.0.0"
+requires-python = ">=3.10"
+dependencies = ["fastapi", "uvicorn", "gunicorn", "uvicorn-worker", "fastmcp", "numpy"]
+
+[tool.scikit-build]
+wheel.packages = ["python/specfun"]
+cmake.source-dir = "."
