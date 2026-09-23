@@ -48,7 +48,7 @@ jobs:
 
       - name: Install nativegate and regenerate from upstream Fortran
         run: |
-          pip install "nativegate[clang,build,test]>=0.1.5"
+          pip install "nativegate[clang,build,test]>=0.1.6"
           ngate generate specfun
 
       - name: Install the service and verify the golden values
@@ -74,7 +74,7 @@ jobs:
       - run: pip install build twine
       - name: Rebuild the wheel from source with nativegate
         run: |
-          pip install "nativegate[clang,build,test]>=0.1.5"
+          pip install "nativegate[clang,build,test]>=0.1.6"
           ngate generate specfun
           cd services/specfun && python -m build --sdist --wheel
       - name: Twine check
