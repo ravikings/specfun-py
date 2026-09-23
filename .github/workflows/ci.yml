@@ -43,7 +43,8 @@ jobs:
       # push. This also expands INCLUDE decks into native/_expanded, which
       # the committed tree does not carry.
       - name: Regenerate the service from upstream Fortran
-        working-directory: services/specfun
+        # ngate resolves services/<name>/ against the working directory, so
+        # this must run from the repository root, not from services/specfun.
         run: ngate generate specfun
 
       - name: Install the service
