@@ -244,8 +244,8 @@ C  Final adjustments and return
 C----------------------------------------------------------------------
       IF (PARITY) RES = -RES
       IF (FACT .NE. ONE) RES = FACT / RES
-CS900 GAMMA = RES
-CD900 DGAMMA = RES
+C 900 GAMMA = RES
+  900 DGAMMA = RES
       RETURN
 C ---------- Last line of GAMMA ----------
       END
