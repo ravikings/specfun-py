@@ -93,13 +93,7 @@ jobs:
           # pip installs console scripts next to the interpreter it was
           # invoked with; manylinux's cp312 bin dir is off the default PATH.
           export PATH="$BINDIR:$PATH"
-          "$PY" -m pip show -f nativegate | sed -n '1,3p'
-          echo "$BINDIR contains:"; ls "$BINDIR" | grep -i -E "^ngate|^nativegate" || true
-          echo "which python3: $(which python3)"
-          "$PY" -c "import nativegate, pathlib; print('pkg:', pathlib.Path(nativegate.__file__).parent)"
-          # invoke the entry point through the module, the most robust path:
-          "$PY" -m nativegate generate specfun || echo "::error::entry-point module failed"
-          ngate generate specfun
+          "$PY" -m nativegate generate specfun
       - name: Build sdist and wheel
         shell: bash
         run: |
