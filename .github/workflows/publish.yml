@@ -89,7 +89,13 @@ jobs:
         shell: bash
         run: |
           PY=$(cat /tmp/pybin)
-          export PATH="$(dirname "$PY"):$PATH"
+          BINDIR=$(dirname "$PY")
+          # pip installs console scripts next to the interpreter it was
+          # invoked with; manylinux's cp312 bin dir is off the default PATH.
+          export PATH="$BINDIR:$PATH"
+          set -x
+          ls "$BINDIR" | head -20
+          command -v ngate || { echo 'ngate not found in pip bin dir' >&2; exit 1; }
           ngate generate specfun
       - name: Build sdist and wheel
         shell: bash
