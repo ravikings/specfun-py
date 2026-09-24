@@ -48,7 +48,7 @@ jobs:
 
       - name: Install nativegate and regenerate from upstream Fortran
         run: |
-          pip install "nativegate[clang,build,test]>=0.1.7"
+          pip install "nativegate[clang,build,test]>=0.1.9"
           ngate generate specfun
 
       - name: Install the service and verify the golden values
@@ -57,11 +57,58 @@ jobs:
           ngate golden verify specfun
           python -m pytest services/specfun/tests -q
 
-  build:
-    name: Build distribution
+  build-manylinux:
+    # PyPI rejects linux_x86_64-tagged wheels, so Linux binaries are built in
+    # a manylinux image and repaired with auditwheel (v1.0.3's 400 made this
+    # explicit). gfortran comes from the image's distro; libgfortran gets
+    # vendored into the wheel by auditwheel repair.
+    name: Build distribution (manylinux 2-28)
     needs: [check-version]
     if: "!cancelled() && (needs.check-version.result == 'success' || needs.check-version.result == 'skipped')"
     runs-on: ubuntu-latest
+    container:
+      image: quay.io/pypa/manylinux_2_28_x86_64
+    steps:
+      - name: Install the toolchain from the image's own repos
+        run: |
+          dnf install -y --setopt=install_weak_deps=False \
+            gcc-gfortran gcc-c++ patchelf findutils diffutils || \
+          yum install -y gcc-gfortran gcc-c++ patchelf
+      - uses: actions/checkout@v4
+      - name: Install nativegate and the build tools
+        run: |
+          python3 -m pip install --upgrade pip
+          python3 -m pip install "nativegate[clang,build,test]>=0.1.9" build auditwheel twine
+      - name: Regenerate from upstream Fortran
+        run: ngate generate specfun
+      - name: Build sdist and wheel
+        run: |
+          cd services/specfun
+          python3 -m build --sdist
+          python3 -m build --wheel
+      - name: Vendor the shared libs and retag to manylinux
+        run: |
+          cd services/specfun
+          auditwheel repair --plat manylinux_2_28_x86_64 dist/specfun-*.whl -w dist_repaired/
+          rm -f dist/specfun-*.whl
+          mv dist_repaired/*.whl dist/
+          twine check --strict dist/specfun-*
+      - name: Install the built wheel and import it
+        run: |
+          python3 -m pip install --no-deps --force-reinstall services/specfun/dist/specfun-*.whl
+          python3 -c "import specfun; print(specfun.DGAMMA(5.0))"
+      - uses: actions/upload-artifact@v4
+        with:
+          name: dist-manylinux
+          path: |
+            services/specfun/dist/specfun-*.whl
+            services/specfun/dist/specfun-*.tar.gz
+          if-no-files-found: error
+
+  build-macos:
+    # macOS platform tags are accepted as built; no repair pass needed.
+    name: Build distribution (macOS)
+    runs-on: macos-latest
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
@@ -69,30 +116,34 @@ jobs:
           python-version: "3.12"
       - name: Install toolchain
         run: |
-          sudo apt-get update
-          sudo apt-get install -y --no-install-recommends gfortran cmake ninja-build
-      - run: pip install build twine
-      - name: Rebuild the wheel from source with nativegate
+          command -v gfortran >/dev/null 2>&1 || brew install gcc
+          command -v cmake >/dev/null 2>&1 || brew install cmake
+          command -v ninja >/dev/null 2>&1 || brew install ninja
+      - name: Install nativegate and regenerate from upstream Fortran
         run: |
-          pip install "nativegate[clang,build,test]>=0.1.7"
+          python -m pip install --upgrade pip
+          pip install "nativegate[clang,build,test]>=0.1.9"
           ngate generate specfun
-          cd services/specfun && python -m build --sdist --wheel
+      - name: Build the wheel (macOS arm64)
+        run: |
+          cd services/specfun && python -m build --wheel
       - name: Twine check
-        run: twine check --strict services/specfun/dist/*
+        run: twine check --strict services/specfun/dist/specfun-*
       - name: Install the built wheel and import it
         run: |
-          pip install --no-deps services/specfun/dist/specfun-*.whl
+          pip install --no-deps --force-reinstall services/specfun/dist/specfun-*.whl
           python -c "import specfun; print(specfun.DGAMMA(5.0))"
       - uses: actions/upload-artifact@v4
         with:
-          name: dist
-          path: services/specfun/dist/
+          name: dist-macos
+          path: services/specfun/dist/specfun-*
+          if-no-files-found: error
 
   publish:
     name: Publish to PyPI
     if: success() && github.event_name == 'release'
     runs-on: ubuntu-latest
-    needs: [build, test]
+    needs: [test, build-manylinux, build-macos]
     environment:
       name: pypi
       url: https://pypi.org/project/specfun/
@@ -101,6 +152,10 @@ jobs:
     steps:
       - uses: actions/download-artifact@v4
         with:
-          name: dist
+          name: dist-manylinux
+          path: dist/
+      - uses: actions/download-artifact@v4
+        with:
+          name: dist-macos
           path: dist/
       - uses: pypa/gh-action-pypi-publish@dc37677b2e1c63e2034f94d8a5b11f265b73ba33  # v1.14.2
