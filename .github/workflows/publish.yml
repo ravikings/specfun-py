@@ -76,27 +76,43 @@ jobs:
           yum install -y gcc-gfortran gcc-c++ patchelf
       - uses: actions/checkout@v4
       - name: Install nativegate and the build tools
+        # manylinux's /opt/python cp312 is the interpreter the wheel must
+        # target; it ships without pip, so ensurepip first (not get-pip).
         run: |
-          python3 -m pip install --upgrade pip
-          python3 -m pip install "nativegate[clang,build,test]>=0.1.9" build auditwheel twine
+          PY=$(command -v python3.12 || command -v python3)
+          $PY -m ensurepip --upgrade || true
+          $PY -m pip install --upgrade pip
+          $PY -m pip install "nativegate[clang,build,test]>=0.1.9" build auditwheel twine
+          echo "PY=$PY" >> "$GITHUB_ENV"
+          echo "$PY" > /tmp/pybin
       - name: Regenerate from upstream Fortran
-        run: ngate generate specfun
+        shell: bash
+        run: |
+          PY=$(cat /tmp/pybin)
+          export PATH="$(dirname "$PY"):$PATH"
+          ngate generate specfun
       - name: Build sdist and wheel
+        shell: bash
         run: |
+          PY=$(cat /tmp/pybin)
           cd services/specfun
-          python3 -m build --sdist
-          python3 -m build --wheel
+          $PY -m build --sdist
+          $PY -m build --wheel
       - name: Vendor the shared libs and retag to manylinux
+        shell: bash
         run: |
+          PY=$(cat /tmp/pybin)
           cd services/specfun
-          auditwheel repair --plat manylinux_2_28_x86_64 dist/specfun-*.whl -w dist_repaired/
+          $PY -m auditwheel repair --plat manylinux_2_28_x86_64 dist/specfun-*.whl -w dist_repaired/
           rm -f dist/specfun-*.whl
           mv dist_repaired/*.whl dist/
-          twine check --strict dist/specfun-*
+          $PY -m twine check --strict dist/specfun-*
       - name: Install the built wheel and import it
+        shell: bash
         run: |
-          python3 -m pip install --no-deps --force-reinstall services/specfun/dist/specfun-*.whl
-          python3 -c "import specfun; print(specfun.DGAMMA(5.0))"
+          PY=$(cat /tmp/pybin)
+          $PY -m pip install --no-deps --force-reinstall services/specfun/dist/specfun-*.whl
+          $PY -c "import specfun; print(specfun.DGAMMA(5.0))"
       - uses: actions/upload-artifact@v4
         with:
           name: dist-manylinux
@@ -124,6 +140,8 @@ jobs:
           python -m pip install --upgrade pip
           pip install "nativegate[clang,build,test]>=0.1.9"
           ngate generate specfun
+      - name: Install build + twine
+        run: pip install build twine
       - name: Build the wheel (macOS arm64)
         run: |
           cd services/specfun && python -m build --wheel
